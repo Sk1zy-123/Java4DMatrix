@@ -1,171 +1,52 @@
-/*
-   Copyright (C) 1997,1998,1999
-   Kenji Hiranabe, Eiwa System Management, Inc.
-
-   This program is free software.
-   Implemented by Kenji Hiranabe(hiranabe@esm.co.jp),
-   conforming to the Java(TM) 3D API specification by Sun Microsystems.
-
-   Permission to use, copy, modify, distribute and sell this software
-   and its documentation for any purpose is hereby granted without fee,
-   provided that the above copyright notice appear in all copies and
-   that both that copyright notice and this permission notice appear
-   in supporting documentation. Kenji Hiranabe and Eiwa System Management,Inc.
-   makes no representations about the suitability of this software for any
-   purpose.  It is provided "AS IS" with NO WARRANTY.
-*/
 package javax.vecmath;
 
 import java.io.Serializable;
 
-/**
- * A double precision floating point 4 by 4 matrix.
- * @version specification 1.1, implementation $Revision$, $Date$
- * @author Kenji hiranabe
- */
-public class Matrix4d implements Serializable {
-/*
- * $Log$
- * Revision 1.1  2002/08/22 20:01:14  egonw
- * Lots of new files. Amongst which the source code of vecmath.jar.
- * The latter has been changed to compile with gcj-3.0.4.
- * Actually, CDK does now compile, i.e. at least the classes mentioned
- * in core.classes and extra.classes. *And* a binary executable can get
- * generated that works!
- *
- * Revision 1.15  1999/10/05  07:03:50  hiranabe
- * copyright change
- *
- * Revision 1.15  1999/10/05  07:03:50  hiranabe
- * copyright change
- *
- * Revision 1.14  1999/06/12  03:27:36  hiranabe
- * minor internal notation change
- *
- * Revision 1.13  1999/06/12  03:15:11  hiranabe
- * SVD normlizatin is done for each axis
- *
- * Revision 1.12  1999/03/04  09:16:33  hiranabe
- * small bug fix and copyright change
- *
- * Revision 1.11  1998/10/14  00:49:10  hiranabe
- * API1.1 Beta02
- *
- * Revision 1.10  1998/07/27  04:33:08  hiranabe
- * transpose(M m1) bug. It acted as the same as 'set'.
- *
- * Revision 1.9  1998/07/27  04:28:13  hiranabe
- * API1.1Alpha01 ->API1.1Alpha03
- *
- * Revision 1.8  1998/04/17  10:30:46  hiranabe
- * null check for equals
- *
- * Revision 1.7  1998/04/10  04:52:14  hiranabe
- * API1.0 -> API1.1 (added constructors, methods)
- *
- * Revision 1.6  1998/04/09  08:18:15  hiranabe
- * minor comment change
- *
- * Revision 1.5  1998/04/09  07:05:18  hiranabe
- * API 1.1
- *
- * Revision 1.4  1998/04/08  06:01:08  hiranabe
- * bug fix of set(m,t,s). thanks > t.m.child@surveying.salford.ac.uk
- *
- * Revision 1.3  1998/01/05  06:29:31  hiranabe
- * copyright 98
- *
- * Revision 1.2  1997/12/10  06:08:05  hiranabe
- * toString   '\n' -> "line.separator"
- *
- * Revision 1.1  1997/11/26  03:00:44  hiranabe
- * Initial revision
- *
- */
 
-    /**
-      * The first element of the first row.
-      */
     public double m00;
 
-    /**
-      * The second element of the first row.
-      */
+   
     public double m01;
 
-    /**
-      * third element of the first row.
-      */
+    
     public double m02;
 
-    /**
-      * The fourth element of the first row.
-      */
+    
     public double m03;
 
-    /**
-      * The first element of the second row.
-      */
+    
     public double m10;
 
-    /**
-      * The second element of the second row.
-      */
+    
     public double m11;
 
-    /**
-      * The third element of the second row.
-      */
+ 
     public double m12;
 
-    /**
-      * The fourth element of the second row.
-      */
+   
     public double m13;
 
-    /**
-      * The first element of the third row.
-      */
+  
     public double m20;
 
-    /**
-      * The second element of the third row.
-      */
+    
     public double m21;
 
-    /**
-      * The third element of the third row.
-      */
+    
     public double m22;
 
-    /**
-      * The fourth element of the third row.
-      */
+
     public double m23;
 
-    /**
-      * The first element of the fourth row.
-      */
     public double m30;
 
-    /**
-      * The second element of the fourth row.
-      */
     public double m31;
 
-    /**
-      * The third element of the fourth row.
-      */
     public double m32;
 
-    /**
-      * The fourth element of the fourth row.
-      */
     public double m33;
 
     /**
-      * 
-      * Constructs and initializes a Matrix4d from the specified 16 values.
       * @param m00 the [0][0] element
       * @param m01 the [0][1] element
       * @param m02 the [0][2] element
@@ -195,67 +76,32 @@ public class Matrix4d implements Serializable {
 	    );
     }
 
-    /**
-      * Constructs and initializes a Matrix4d from the specified 16
-      * element array.  this.m00 =v[0], this.m01=v[1], etc.
-      * @param  v the array of length 16 containing in order
-      */
     public Matrix4d(double v[]) {
 	set(v);
     }
 
-    /**
-      * Constructs and initializes a Matrix4d from the quaternion,
-      * translation, and scale values; the scale is applied only to the
-      * rotational components of the matrix (upper 3x3) and not to the
-      * translational components.
-      * @param q1  The quaternion value representing the rotational component
-      * @param t1  The translational component of the matrix
-      * @param s  The scale value applied to the rotational components
-      */
+
     public Matrix4d(Quat4d q1, Vector3d t1, double s) {
 	set(q1, t1, s);
     }
 
-    /**
-      * Constructs and initializes a Matrix4d from the quaternion,
-      * translation, and scale values; the scale is applied only to the
-      * rotational components of the matrix (upper 3x3) and not to the
-      * translational components.
-      * @param q1  The quaternion value representing the rotational component
-      * @param t1  The translational component of the matrix
-      * @param s  The scale value applied to the rotational components
-      */
+
     public Matrix4d(Quat4f q1, Vector3d t1, double s) {
 	set(q1, t1, s);
     }
 
 
-    /**
-      * Constructs a new matrix with the same values as the Matrix4d parameter.
-      * @param m1 The source matrix.
-      */
+  
     public Matrix4d(Matrix4d m1) {
 	set(m1);
     }
 
-    /**
-      * Constructs a new matrix with the same values as the Matrix4f parameter.
-      * @param m1 The source matrix.
-      */
+
     public Matrix4d(Matrix4f m1) {
 	set(m1);
     }
 
-    /**
-      * Constructs and initializes a Matrix4d from the rotation matrix,
-      * translation, and scale values; the scale is applied only to the
-      * rotational components of the matrix (upper 3x3) and not to the
-      * translational components.
-      * @param m1  The rotation matrix representing the rotational components
-      * @param t1  The translational components of the matrix
-      * @param s  The scale value applied to the rotational components
-      */
+   
     public Matrix4d(Matrix3f m1, Vector3d t1, double s) {
 	// why no set(Matrix3f, Vector3d, double) ?
 	// set(Matrix3f, Vector3f, float) is there.
@@ -286,10 +132,7 @@ public class Matrix4d implements Serializable {
 	setZero();
     }
 
-    /**
-     * Returns a string that contains the values of this Matrix4d.
-     * @return the String representation
-     */
+  
     public String toString() {
 	String nl = System.getProperty("line.separator"); 
         return  "[" + nl + "  ["+m00+"\t"+m01+"\t"+m02+"\t"+m03+"]" + nl +
@@ -298,9 +141,7 @@ public class Matrix4d implements Serializable {
                    "  ["+m30+"\t"+m31+"\t"+m32+"\t"+m33+"] ]";
     }
 
-    /**
-     * Sets this Matrix4d to identity.
-     */
+
     public final void setIdentity() {
         m00 = 1.0; m01 = 0.0; m02 = 0.0; m03 = 0.0;
         m10 = 0.0; m11 = 1.0; m12 = 0.0; m13 = 0.0;
@@ -308,12 +149,7 @@ public class Matrix4d implements Serializable {
         m30 = 0.0; m31 = 0.0; m32 = 0.0; m33 = 1.0;
     }
 
-    /**
-     * Sets the specified element of this matrix4d to the value provided.
-     * @param row  the row number to be modified (zero indexed)
-     * @param column  the column number to be modified (zero indexed)
-     * @param value the new value
-     */
+
     public final void setElement(int row, int column, double value) {
 	if (row == 0)
 	    if (column == 0)
@@ -363,12 +199,7 @@ public class Matrix4d implements Serializable {
 		throw new ArrayIndexOutOfBoundsException("row must be 0 to 2 and is " + row);
     }
 
-    /**
-     * Retrieves the value at the specified row and column of this matrix.
-     * @param row  the row number to be retrieved (zero indexed)
-     * @param column  the column number to be retrieved (zero indexed)
-     * @return the value at the indexed element
-     */
+
     public final double getElement(int row, int column) {
 	if (row == 0)
 	    if (column == 0)
@@ -418,148 +249,86 @@ public class Matrix4d implements Serializable {
 		throw new ArrayIndexOutOfBoundsException("row must be 0 to 3 and is " + row);
     }
 
-    /**
-      * Performs an SVD normalization of this matrix in order to acquire the
-      * normalized rotational component; the values are placed into the Matrix3d parameter.
-      * @param m1 matrix into which the rotational component is placed
-      */
+ 
     public final void get(Matrix3d m1) {
 	SVD(m1, null);
     }
 
-    /**
-      * Performs an SVD normalization of this matrix in order to acquire the
-      * normalized rotational component; the values are placed into the Matrix3f parameter.
-      * @param m1 matrix into which the rotational component is placed
-      */
+  
     public final void get(Matrix3f m1) {
 	SVD(m1);
     }
 
-    /**
-      * Performs an SVD normalization of this matrix to calculate the rotation
-      * as a 3x3 matrix, the translation, and the scale. None of the matrix values are modified.
-      * @param m1 The normalized matrix representing the rotation
-      * @param t1 The translation component
-      * @return The scale component of this transform
-      */
+ 
     public final double get(Matrix3d m1, Vector3d t1) {
 	get(t1);
 	return SVD(m1, null);
     }
 
-    /**
-      * Performs an SVD normalization of this matrix to calculate the rotation
-      * as a 3x3 matrix, the translation, and the scale. None of the matrix values are modified.
-      * @param m1 The normalized matrix representing the rotation
-      * @param t1 The translation component
-      * @return The scale component of this transform
-      */
+  
     public final double get(Matrix3f m1, Vector3d t1) {
 	get(t1);
 	return SVD(m1);
     }
 
-    /**
-      * Performs an SVD normalization of this matrix in order to acquire the
-      * normalized rotational component; the values are placed into
-      * the Quat4f parameter.
-      * @param q1 quaternion into which the rotation component is placed
-      */
+   
     public final void get(Quat4f q1) {
 	q1.set(this);
 	q1.normalize();
     }
 
-    /**
-      * Performs an SVD normalization of this matrix in order to acquire the
-      * normalized rotational component; the values are placed into
-      * the Quat4f parameter.
-      * @param q1 quaternion into which the rotation component is placed
-      */
+   
     public final void get(Quat4d q1) {
 	q1.set(this);
 	q1.normalize();
     }
 
-    /**
-      * Retrieves the translational components of this matrix.
-      * @param trans the vector that will receive the translational component
-      */
     public final void get(Vector3d trans) {
 	trans.x = m03;
 	trans.y = m13;
 	trans.z = m23;
     }
 
-    /**
-      * Gets the upper 3x3 values of this matrix and places them into the matrix m1.
-      * @param m1 The matrix that will hold the values
-      */
+   
     public final void getRotationScale(Matrix3f m1) {
 	m1.m00 = (float)m00; m1.m01 = (float)m01; m1.m02 = (float)m02;
 	m1.m10 = (float)m10; m1.m11 = (float)m11; m1.m12 = (float)m12;
 	m1.m20 = (float)m20; m1.m21 = (float)m21; m1.m22 = (float)m22;
     }
 
-    /**
-      * Gets the upper 3x3 values of this matrix and places them into the matrix m1.
-      * @param m1 The matrix that will hold the values
-      */
+    
     public final void getRotationScale(Matrix3d m1) {
 	m1.m00 = m00; m1.m01 = m01; m1.m02 = m02;
 	m1.m10 = m10; m1.m11 = m11; m1.m12 = m12;
 	m1.m20 = m20; m1.m21 = m21; m1.m22 = m22;
     }
 
-    /**
-      * Performs an SVD normalization of this matrix to calculate and return the
-      * uniform scale factor. This matrix is not modified.
-      * @return the scale factor of this matrix
-      */
+  
     public final double getScale() {
 	return SVD(null);
     }
 
-    /**
-      * Replaces the upper 3x3 matrix values of this matrix with the values in the matrix m1.
-      * @param m1 The matrix that will be the new upper 3x3
-      */
+    
     public final void setRotationScale(Matrix3d m1) {
 	m00 = m1.m00; m01 = m1.m01; m02 = m1.m02;
 	m10 = m1.m10; m11 = m1.m11; m12 = m1.m12;
 	m20 = m1.m20; m21 = m1.m21; m22 = m1.m22;
     }
 
-    /**
-      * Replaces the upper 3x3 matrix values of this matrix with the values in the matrix m1.
-      * @param m1 The matrix that will be the new upper 3x3
-      */
+  
     public final void setRotationScale(Matrix3f m1) {
 	m00 = m1.m00; m01 = m1.m01; m02 = m1.m02;
 	m10 = m1.m10; m11 = m1.m11; m12 = m1.m12;
 	m20 = m1.m20; m21 = m1.m21; m22 = m1.m22;
     }
 
-    /**
-      * Sets the scale component of the current matrix by factoring out the
-      * current scale (by doing an SVD) from the rotational component and
-      * multiplying by the new scale.
-      * @param scale the new scale amount
-      */
+   
     public final void setScale(double scale) {
 	SVD(null, this);
 	mulRotationScale(scale);
     }
 
-    /**
-     * Sets the specified row of this matrix4d to the four values provided.
-     * @param row  the row number to be modified (zero indexed)
-     * @param x the first column element
-     * @param y the second column element
-     * @param z the third column element
-     * @param w the fourth column element
-     */
+   
     public final void setRow(int row, double x, double y, double z, double w) {
 	if (row == 0) {
 	    m00 = x;
@@ -586,11 +355,7 @@ public class Matrix4d implements Serializable {
 	}
     }
 
-    /**
-     * Sets the specified row of this matrix4d to the Vector provided.
-     * @param row the row number to be modified (zero indexed)
-     * @param v the replacement row
-     */
+   
     public final void setRow(int row, Vector4d v) {
 	if (row == 0) {
 	    m00 = v.x;
@@ -617,11 +382,7 @@ public class Matrix4d implements Serializable {
 	}
     }
 
-    /**
-      * Sets the specified row of this matrix4d to the four values provided.
-      * @param row the row number to be modified (zero indexed)
-      * @param v the replacement row
-      */
+    
     public final void setRow(int row, double v[]) {
 	if (row == 0) {
 	    m00 = v[0];
@@ -648,12 +409,7 @@ public class Matrix4d implements Serializable {
 	}
     }
 
-    /**
-     * Copies the matrix values in the specified row into the
-     * vector parameter.
-     * @param row the matrix row
-     * @param v The vector into which the matrix row values will be copied
-     */
+   
     public final void getRow(int row, Vector4d v) {
 	if (row == 0) {
 	    v.x = m00;
@@ -680,12 +436,7 @@ public class Matrix4d implements Serializable {
 	}
     }
 
-    /**
-      * Copies the matrix values in the specified row into the
-      * array parameter.
-      * @param row the matrix row
-      * @param v The array into which the matrix row values will be copied
-      */
+ 
     public final void getRow(int row, double v[]) {
 	if (row == 0) {
 	    v[0] = m00;
@@ -712,14 +463,7 @@ public class Matrix4d implements Serializable {
 	}
     }
 
-    /**
-      * Sets the specified column of this matrix4d to the four values provided.
-      * @param  column the column number to be modified (zero indexed)
-      * @param x the first row element
-      * @param y the second row element
-      * @param z the third row element
-      * @param w the fourth row element
-      */
+   
     public final void setColumn(int column, double x, double y, double z, double w) {
 	if (column == 0) {
 	    m00 = x;
